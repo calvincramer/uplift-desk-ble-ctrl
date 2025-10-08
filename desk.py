@@ -134,7 +134,6 @@ async def main() -> None:
         print("Enter a command. 'h' for help")
         while True:
             user_command = input("> ").strip()
-            print(f"{user_command} - {type(user_command)}")
             match user_command:
                 case "h":
                     print_command_options()
