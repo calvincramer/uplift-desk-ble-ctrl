@@ -46,7 +46,12 @@ int get_hour_current_time_zone() {
 // Prints current time
 void print_time() {
   if (unix_time == 0 || ms_got_unix_time == 0) {
-    Serial.print("<unknown time>");
+    Serial.print("<unknown time> (unix_time=");
+    Serial.print(unix_time);
+    Serial.print(", ms_got_unix_time=");
+    Serial.print(ms_got_unix_time);
+    Serial.print(")");
+    return;
   }
   unsigned long time = unix_time;
   time += (millis() - ms_got_unix_time) / 1000;

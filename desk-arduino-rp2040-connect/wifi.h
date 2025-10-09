@@ -20,14 +20,22 @@ void wifi_on() {
   }
 
   int wifi_status = WL_IDLE_STATUS;
+  int attempt_count = 0;
   while (wifi_status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(ssid);
+    if (attempt_count % 10 == 0) {
+      Serial.print("Attempting to connect to WiFi SSID: ");
+      Serial.print(ssid);
+      Serial.print(" ");
+    } else {
+      Serial.print(".");
+    } 
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     wifi_status = WiFi.begin(ssid, pass);
-    // wait 10 seconds for connection:
-    delay(10000);
+    // wait for connection:
+    delay(100);
+    attempt_count += 1;
   }
+  Serial.println();
   Serial.print("Connected to WiFi! ");
   Serial.print(WiFi.SSID());
   Serial.print(" ");
@@ -44,8 +52,19 @@ void wifi_off() {
 }
 
 unsigned long get_time_from_ntp() {
-  Serial.println("Getting time from WifFi.getTime()... ");
-  return WiFi.getTime();
+  Serial.println("Getting time from WifFi.getTime() ");
+  while (true) {
+    unsigned long time = WiFi.getTime();
+    // 0 is failure
+    if (time != 0) {
+      Serial.println();
+      Serial.print("Got time: ");
+      Serial.println(time);
+      return time;
+    }
+    Serial.print(".");
+    delay(500);
+  }
 }
 
 #endif
