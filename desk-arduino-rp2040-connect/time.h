@@ -13,7 +13,6 @@ unsigned long unix_time = 0;
 unsigned long ms_got_unix_time = 0;
 
 
-
 void get_time() {
   // Expire saved time every once in a while
   if ((millis() - ms_got_unix_time) > MILLISECONDS_PER_DAY) {

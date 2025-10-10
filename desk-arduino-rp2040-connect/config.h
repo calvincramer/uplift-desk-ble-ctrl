@@ -2,8 +2,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "config-private.h"
-
 // UUID of your bluetooth adapter.
 const arduino::String ADAPTER_UUID = "000000ff-0000-1000-8000-00805f9b34fb";
 
@@ -21,6 +19,6 @@ const char* CHAR_UUID_DESK_CTRL = "ff01";
 const int TIME_ZONE_SHIFT_SECONDS = -1*60*60*5;
 
 // Hour of the day to run the desk command. 0 to 23
-const int HOUR_TO_RUN_DESK_COMMAND = 5; 
+const int HOUR_TO_RUN_DESK_COMMAND = 5;
 
 #endif

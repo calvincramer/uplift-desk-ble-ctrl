@@ -5,16 +5,20 @@
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
 
-#include "state.h"
+#include "config-private.h"
 
 void wifi_on() {
   Serial.println("Turning on WiFi and connecting");
-  if (WiFi.status() == WL_NO_MODULE) {
-    Serial.println("Communication with WiFi module failed!");
-    while (true) {
-      delay(100000);
+  while (true) {
+    uint8_t status = WiFi.status();
+    if (WiFi.status() == WL_NO_MODULE) {
+      Serial.println("Communication with WiFi module failed! (status=WL_NO_MODULE)");
+      delay(1000);
+      continue;
     }
+    break;
   }
+
   if (WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION) {
     Serial.println("Please upgrade the wifi firmware");
   }
@@ -23,6 +27,9 @@ void wifi_on() {
   int attempt_count = 0;
   while (wifi_status != WL_CONNECTED) {
     if (attempt_count % 10 == 0) {
+      if (attempt_count > 0) {
+        Serial.println();
+      }
       Serial.print("Attempting to connect to WiFi SSID: ");
       Serial.print(ssid);
       Serial.print(" ");
@@ -47,12 +54,15 @@ void wifi_on() {
 
 void wifi_off() {
   Serial.println("Turning off wifi");
+  delay(100);
   WiFi.disconnect();
+  delay(100);
   WiFi.end();
+  delay(100);
 }
 
 unsigned long get_time_from_ntp() {
-  Serial.println("Getting time from WifFi.getTime() ");
+  Serial.print("Getting time from WifFi.getTime() ");
   while (true) {
     unsigned long time = WiFi.getTime();
     // 0 is failure
@@ -63,7 +73,7 @@ unsigned long get_time_from_ntp() {
       return time;
     }
     Serial.print(".");
-    delay(500);
+    delay(1000);
   }
 }
 

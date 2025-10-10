@@ -1,12 +1,21 @@
 #ifndef DESK_H
 #define DESK_H
 
+#include "state.h"
+
 // Desk control bluetooth payloads
 const uint8_t CMD_PACKET_WAKE[] = {0xF1, 0xF1, 0x00, 0x00, 0x00, 0x7E};
 const uint8_t CMD_PACKET_GO_TO_PRESET_2[] = {0xF1, 0xF1, 0x06, 0x00, 0x06, 0x7E};
 
 bool ranDeskCommand = false;  // true after we send command to raise. Resets to false after a few hours.
 
+// Steps:
+// 1. Connect to the desk over bluetooth
+// 2. Discover bluetooth attributes (this is necessary)
+// 3. Get expected bluetooth characteristic foir desk control
+// 4. Wake bluetooth adapter (necessary)
+// 5. Send user command
+// 6. Go back to WAITING state
 void controlDesk(BLEDevice device) {
     // Connect
     Serial.print("Connecting...");
