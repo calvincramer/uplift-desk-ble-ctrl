@@ -1,9 +1,9 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "wifi.h"
 #include "bluetooth.h"
 #include "led.h"
+#include "wifi.h"
 
 typedef int state_t;
 

@@ -7,11 +7,11 @@
 #include <ArduinoBLE.h>
 #include <WiFiNINA.h>
 
-#include "led.h"
 #include "config.h"
+#include "desk.h"
+#include "led.h"
 #include "state.h"
 #include "time.h"
-#include "desk.h"
 
 unsigned long millis_printed_waiting_msg = 0;
 

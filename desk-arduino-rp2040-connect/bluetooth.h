@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-// "Please note: While using the Bluetooth® Low Energy mode on the NINA module, the RGB cannot be 
+// "Please note: While using the Bluetooth® Low Energy mode on the NINA module, the RGB cannot be
 // used by default. While the module is in Bluetooth® Low Energy mode, SPI is deactivated, which is
 // used to control the RGBs."
 // https://docs.arduino.cc/tutorials/nano-rp2040-connect/rp2040-01-technical-reference/?queryID=4e5c31d3cc445c8420f020f036569c94#rgb
