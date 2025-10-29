@@ -16,8 +16,8 @@ from bleak.backends.device import BLEDevice
 UUID_PRIMARY_SERVICE_DISCOVERY = normalize_uuid_16(0x00FF)
 
 # Bluetooth characteristic UUIDs. These change depending on the version of the bluetooth adapter
-CHAR_UUID_DESK_CTRL = normalize_uuid_16(0xFF01)
-CHAR_UUID_DESK_HEIGHT = normalize_uuid_16(0xFF02)  # unused, I don't care about height.
+CHAR_UUID_DESK_CTRL = normalize_uuid_16(0xFF02)
+# CHAR_UUID_DESK_HEIGHT = normalize_uuid_16(0xFF02)  # unused, I don't care about height.
 
 # Command packets. Have the following format:
 # [0xF1, 0xF1, opcode, length, payload..., checksum, 0x7E]
