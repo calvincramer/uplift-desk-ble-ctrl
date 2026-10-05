@@ -1,4 +1,3 @@
-#include "utility/wl_definitions.h"
 #ifndef WIFI_H
 #define WIFI_H
 
@@ -11,7 +10,7 @@ void wifi_on() {
     Serial.println("Turning on WiFi and connecting");
     while (true) {
         uint8_t status = WiFi.status();
-        if (WiFi.status() == WL_NO_MODULE) {
+        if (status == WL_NO_MODULE) {
             Serial.println("Communication with WiFi module failed! (status=WL_NO_MODULE)");
             delay(1000);
             continue;
@@ -19,7 +18,7 @@ void wifi_on() {
         break;
     }
 
-    if (WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION) {
+    if (String(WiFi.firmwareVersion()) < WIFI_FIRMWARE_LATEST_VERSION) {
         Serial.println("Please upgrade the wifi firmware");
     }
 

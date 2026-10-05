@@ -36,3 +36,8 @@ char pass[] = "password"; // your network password (use for WPA, or use as key f
 ```
 
 See `config.h` for most of the configurable options. Edit `desk.h` to change the desk command that is sent to the adapter.
+
+### Libraries
+
+- ArduinoBLE v1.3.7
+- WiFiNINA v1.9.1

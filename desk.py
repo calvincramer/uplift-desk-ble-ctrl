@@ -5,8 +5,6 @@ from __future__ import annotations
 import asyncio
 
 from bleak import BleakScanner, BleakClient
-from bleak.backends.device import BLEDevice
-from bleak import BleakScanner, BleakClient
 from bleak.uuids import normalize_uuid_16
 from bleak.backends.device import BLEDevice
 
@@ -21,7 +19,14 @@ CHAR_UUID_DESK_HEIGHT = normalize_uuid_16(0xFF02)  # unused, I don't care about 
 
 # Command packets. Have the following format:
 # [0xF1, 0xF1, opcode, length, payload..., checksum, 0x7E]
-CMD_PACKET_WAKE = [0xF1, 0xF1, 0x00, 0x00, 0x00, 0x7E]  # The content of this command actually doesn't seem to matter, the desk just needs to wake up
+CMD_PACKET_WAKE = [
+    0xF1,
+    0xF1,
+    0x00,
+    0x00,
+    0x00,
+    0x7E,
+]  # The content of this command actually doesn't seem to matter, the desk just needs to wake up
 CMD_PACKET_UP = [0xF1, 0xF1, 0x01, 0x00, 0x01, 0x7E]
 CMD_PACKET_DOWN = [0xF1, 0xF1, 0x02, 0x00, 0x02, 0x7E]
 CMD_PACKET_GO_TO_PRESET_1 = [0xF1, 0xF1, 0x05, 0x00, 0x05, 0x7E]
@@ -92,7 +97,9 @@ async def dump_client_info(bleak_client: BleakClient) -> None:
 
     async def get_gatt_characteristic_string(characteristic, bleak_client: BleakClient) -> str:
         value: str = await bleak_client.read_gatt_char(characteristic.uuid)
-        return f"{characteristic.uuid} - {characteristic.description} - ({', '.join(characteristic.properties)}): {value}"
+        return (
+            f"{characteristic.uuid} - {characteristic.description} - ({', '.join(characteristic.properties)}): {value}"
+        )
 
     def get_gatt_descriptor_string(descriptor) -> str:
         return f"{descriptor.uuid} - {descriptor.description}"

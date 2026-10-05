@@ -95,6 +95,7 @@ void loop_connecting() {
             Serial.print("Error: unexpected device name: ");
             Serial.println(device.localName());
             delay(500);
+            scan_for_device(); // scan stopped above, restart it
             return;
         }
         printDeviceInfo(device);
