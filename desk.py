@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 
 from bleak import BleakScanner, BleakClient
+from bleak.exc import BleakError
 from bleak.uuids import normalize_uuid_16
 from bleak.backends.device import BLEDevice
 
@@ -70,15 +71,16 @@ async def cmd_wake(bleak_client: BleakClient) -> None:
     return None
 
 
-async def discover_desk_ble_adapter() -> BLEDevice:
+async def discover_desk_ble_adapter(timeout: float = 30.0) -> BLEDevice | None:
     """
     Find a desk bluetooth adapter. Stop after finding one.
+    Returns None if no adapter is found within `timeout` seconds.
     To find all the adapters if you have multiple desks, using something like:
     BleakScanner().discover(timeout=10, service_uuids=[UUID_PRIMARY_SERVICE_DISCOVERY])
     or just skip the scan and use a hardcoded device address
     """
     stop_event = asyncio.Event()
-    dev: None  # bleak.backends.device.BLEDevice
+    dev: BLEDevice | None = None
 
     def callback(device, advertising_data):
         nonlocal dev
@@ -87,7 +89,10 @@ async def discover_desk_ble_adapter() -> BLEDevice:
         stop_event.set()
 
     async with BleakScanner(callback, service_uuids=[UUID_PRIMARY_SERVICE_DISCOVERY]) as _:
-        await stop_event.wait()
+        try:
+            await asyncio.wait_for(stop_event.wait(), timeout)
+        except asyncio.TimeoutError:
+            pass
     return dev
 
 
@@ -130,7 +135,12 @@ def print_command_options() -> None:
 
 async def main() -> None:
     print("Scanning for desk bluetooth adapter...")
-    ble_adapter = await discover_desk_ble_adapter()
+    try:
+        ble_adapter = await discover_desk_ble_adapter()
+    except BleakError as e:
+        print(f"Couldn't start bluetooth scan: {e}")
+        print("Bluetooth may be turned off, please check!")
+        exit(1)
     if ble_adapter is None:
         print("No desk bluetooth adapters found")
         exit(1)
