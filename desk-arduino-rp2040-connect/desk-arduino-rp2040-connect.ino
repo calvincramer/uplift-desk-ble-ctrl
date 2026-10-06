@@ -1,5 +1,5 @@
 /*
-  Uplift Desk Controll over Bluetooth
+  Uplift Desk Control over Bluetooth
 
   The sketch is intended to run on the Arduino Nano RP2040 Connect
 */
@@ -14,6 +14,9 @@
 #include "time.h"
 
 unsigned long millis_printed_waiting_msg = 0;
+
+// Give up scanning after a few minutes
+const unsigned long CONNECTING_TIMEOUT_MS = 1000UL * 60 * 2;
 
 // press reset or power the board
 void setup() {
@@ -84,6 +87,14 @@ void loop_waiting() {
 
 // Try to connect and control device
 void loop_connecting() {
+    // Don't scan forever if the adapter is never found
+    if (millis() - millis_entered_state > CONNECTING_TIMEOUT_MS) {
+        Serial.println("Timed out scanning for desk bluetooth adapter");
+        BLE.stopScan();
+        abortDeskAttempt();
+        return;
+    }
+
     // Any device available from scan?
     BLEDevice device = BLE.available();
     if (device) {

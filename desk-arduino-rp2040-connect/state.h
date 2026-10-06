@@ -14,6 +14,7 @@ const state_t STATE_WAITING = 3;    // waiting for the right time to send comman
 const state_t STATE_ERROR = 99;     // any unrecoverable error state
 
 state_t state = STATE_INIT; // Overall state
+unsigned long millis_entered_state = 0; // millis() when the current state was entered
 
 void setLED() {
     switch (state) {
@@ -21,10 +22,10 @@ void setLED() {
         led_yellow();
         break;
     case STATE_CONNECTING:
-        // led_green();  // LED not accesible while using BLE
+        // led_green();  // LED not accessible while using BLE
         break;
     case STATE_CONNECTED:
-        // led_blue();  // LED not accesible while using BLE
+        // led_blue();  // LED not accessible while using BLE
         break;
     case STATE_WAITING:
         led_magenta();
@@ -64,6 +65,7 @@ void setState(state_t newState) {
 
     state_t oldState = state;
     state = newState;
+    millis_entered_state = millis();
 
     Serial.print("State change: ");
     writeStateToSerial(oldState);

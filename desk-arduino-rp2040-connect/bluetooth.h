@@ -21,9 +21,7 @@ void bluetooth_on() {
     Serial.println("Turning bluetooth on");
     while (!BLE.begin()) {
         Serial.println("Failed to start BLE library");
-        while (true) {
-            delay(1000);
-        }
+        delay(2000);
     }
     is_bluetooth_on = true;
 }
