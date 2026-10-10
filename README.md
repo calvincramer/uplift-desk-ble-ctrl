@@ -30,12 +30,19 @@ Provide your wifi credentials in a file called `config-private.h` under the `des
 
 // WiFi name and password, to get current time from NTP
 char ssid[] = "name"; // your network SSID (name)
-char pass[] = "password"; // your network password (use for WPA, or use as key for WEP)
+char pass[] = "password"; // your network password (WPA/WPA2)
 
 #endif
 ```
 
-See `config.h` for most of the configurable options. Edit `desk.h` to change the desk command that is sent to the adapter.
+The sketch connects with `WiFi.begin(ssid, pass)`, which is for WPA/WPA2 networks.
+
+See `config.h` for most of the configurable options:
+- `ADAPTER_NAME` must match your adapter's advertised name. See `bluetoothctl devices`
+- `TIME_ZONE_SHIFT_SECONDS` is a fixed offset
+- `HOUR_TO_RUN_DESK_COMMAND` is the local hour (0-23) to send the command.
+
+By default the sketch sends the command "go to preset 2". Edit `desk.h` to change the desk command that is sent to the adapter.
 
 ### Libraries
 

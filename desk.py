@@ -10,7 +10,7 @@ from bleak.uuids import normalize_uuid_16
 from bleak.backends.device import BLEDevice
 
 # UUID from `bluetoothctl info <device>`
-# Four hex bytes are the xxxx from: 0000xxxx-0000-1000-8000-00805f9b34fb
+# Four hex digits are the xxxx from: 0000xxxx-0000-1000-8000-00805f9b34fb
 # Possible values for different versions of the bluetooth adapter: 0xff12, 0xfe60, 0x00ff
 UUID_PRIMARY_SERVICE_DISCOVERY = normalize_uuid_16(0x00FF)
 
@@ -20,6 +20,7 @@ CHAR_UUID_DESK_HEIGHT = normalize_uuid_16(0xFF02)  # unused, I don't care about 
 
 # Command packets. Have the following format:
 # [0xF1, 0xF1, opcode, length, payload..., checksum, 0x7E]
+# checksum = (opcode + length + sum(payload)) & 0xFF
 CMD_PACKET_WAKE = [
     0xF1,
     0xF1,

@@ -8,7 +8,9 @@ const uint8_t CMD_PACKET_WAKE[] = {0xF1, 0xF1, 0x00, 0x00, 0x00, 0x7E};
 const uint8_t CMD_PACKET_GO_TO_PRESET_1[] = {0xF1, 0xF1, 0x05, 0x00, 0x05, 0x7E};
 const uint8_t CMD_PACKET_GO_TO_PRESET_2[] = {0xF1, 0xF1, 0x06, 0x00, 0x06, 0x7E};
 
-bool ranDeskCommand = false; // true after we send command to raise. Resets to false after a few hours.
+// true after we send the desk command.
+// Reset to false at HOUR_TO_RUN_DESK_COMMAND + 2.
+bool ranDeskCommand = false;
 
 // Give up on this attempt and go back to WAITING to try again
 void abortDeskAttempt() {
