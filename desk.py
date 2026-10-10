@@ -151,26 +151,33 @@ async def main() -> None:
         print("Enter a command. 'h' for help")
         while True:
             user_command = input("> ").strip()
-            match user_command:
-                case "h":
-                    print_command_options()
-                case "1":
-                    await cmd_preset_1(bc)
-                case "2":
-                    await cmd_preset_2(bc)
-                case "r":
-                    await cmd_raise(bc)
-                case "l":
-                    await cmd_lower(bc)
-                case "s":
-                    await cmd_stop_moving(bc)
-                case "e":
-                    break
-                case "v":
-                    await dump_client_info(bc)
-                case _:
-                    print(f"Unknown command: {user_command}")
-                    print_command_options()
+            try:
+                if user_command not in ("h", "e") and not bc.is_connected:
+                    print("Desk disconnected, reconnecting...")
+                    await bc.connect()
+                match user_command:
+                    case "h":
+                        print_command_options()
+                    case "1":
+                        await cmd_preset_1(bc)
+                    case "2":
+                        await cmd_preset_2(bc)
+                    case "r":
+                        await cmd_raise(bc)
+                    case "l":
+                        await cmd_lower(bc)
+                    case "s":
+                        await cmd_stop_moving(bc)
+                    case "e":
+                        break
+                    case "v":
+                        await dump_client_info(bc)
+                    case _:
+                        print(f"Unknown command: {user_command}")
+                        print_command_options()
+            except (BleakError, asyncio.TimeoutError) as e:
+                print(f"Bluetooth error: {e}")
+                print("Command not sent. Try again.")
     return None
 
 
